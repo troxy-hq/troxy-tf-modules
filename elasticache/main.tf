@@ -20,7 +20,7 @@ resource "aws_elasticache_subnet_group" "main" {
 # ─────────────────────────────────────────────
 resource "aws_elasticache_replication_group" "main" {
   replication_group_id = "${local.name_prefix}-redis"
-  description          = "Troxy Redis — budget envelope tracking"
+  description          = "Troxy Redis - budget envelope tracking"
 
   engine               = "redis"
   engine_version       = var.redis_version
