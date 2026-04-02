@@ -154,8 +154,6 @@ resource "aws_lambda_function" "core_handler" {
       DB_NAME        = var.db_name
       DB_USER        = var.db_username
       DB_SECRET_ARN  = var.db_secret_arn
-      REDIS_HOST     = var.redis_host
-      REDIS_PORT     = tostring(var.redis_port)
       APP_SECRET_ARN = var.app_secret_arn
       SNS_TOPIC_ARN  = var.sns_topic_arn
       EVENTS_BUCKET  = var.events_bucket
