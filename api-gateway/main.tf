@@ -12,9 +12,9 @@ resource "aws_apigatewayv2_api" "main" {
 
   cors_configuration {
     allow_credentials = false
-    allow_headers     = ["Content-Type", "Authorization", "X-Troxy-Key"]
-    allow_methods     = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
-    allow_origins     = ["*"] # Tighten to dashboard domain in prod
+    allow_headers     = ["authorization", "content-type", "x-troxy-key"]
+    allow_methods     = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    allow_origins     = ["https://dash.troxy.io", "https://troxy.io", "http://localhost:3000"]
     max_age           = 3600
   }
 
