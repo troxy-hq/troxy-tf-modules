@@ -18,18 +18,6 @@ output "install_bucket_regional_domain_name" {
   value = aws_s3_bucket.main["install"].bucket_regional_domain_name
 }
 
-output "dashboard_bucket_id" {
-  value = aws_s3_bucket.main["dashboard"].id
-}
-
-output "dashboard_bucket_arn" {
-  value = aws_s3_bucket.main["dashboard"].arn
-}
-
-output "dashboard_bucket_regional_domain_name" {
-  value = aws_s3_bucket.main["dashboard"].bucket_regional_domain_name
-}
-
 output "events_bucket_id" {
   value = aws_s3_bucket.main["events"].id
 }

@@ -10,10 +10,6 @@ locals {
       name   = "${local.name_prefix}-install"
       public = true
     }
-    dashboard = {
-      name   = "${local.name_prefix}-dashboard"
-      public = false
-    }
     events = {
       name   = "${local.name_prefix}-events"
       public = false
