@@ -22,10 +22,10 @@ resource "aws_elasticache_replication_group" "main" {
   replication_group_id = "${local.name_prefix}-redis"
   description          = "Troxy Redis - budget envelope tracking"
 
-  engine               = "redis"
-  engine_version       = var.redis_version
-  node_type            = var.node_type
-  num_cache_clusters   = 1 # single node for MVP
+  engine             = "redis"
+  engine_version     = var.redis_version
+  node_type          = var.node_type
+  num_cache_clusters = 1 # single node for MVP
 
   subnet_group_name  = aws_elasticache_subnet_group.main.name
   security_group_ids = var.security_group_ids

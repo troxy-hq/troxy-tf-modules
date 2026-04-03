@@ -67,9 +67,9 @@ resource "aws_db_instance" "main" {
   backup_window           = "03:00-04:00"
   maintenance_window      = "sun:04:00-sun:05:00"
 
-  skip_final_snapshot       = true  # MVP — change to false for prod
-  deletion_protection       = var.deletion_protection
-  apply_immediately         = true
+  skip_final_snapshot = true # MVP — change to false for prod
+  deletion_protection = var.deletion_protection
+  apply_immediately   = true
 
   performance_insights_enabled = false # cost saving for MVP
 
