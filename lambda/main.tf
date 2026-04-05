@@ -157,6 +157,7 @@ resource "aws_lambda_function" "core_handler" {
       APP_SECRET_ARN = var.app_secret_arn
       SNS_TOPIC_ARN  = var.sns_topic_arn
       EVENTS_BUCKET  = var.events_bucket
+      API_BASE_URL   = var.api_base_url
     }
   }
 

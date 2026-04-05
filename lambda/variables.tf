@@ -63,3 +63,9 @@ variable "timeout" {
   type        = number
   default     = 30
 }
+
+variable "api_base_url" {
+  description = "Public base URL for the API (used in emails)"
+  type        = string
+  default     = "https://api.troxy.io"
+}
