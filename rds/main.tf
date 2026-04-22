@@ -61,7 +61,7 @@ resource "aws_db_instance" "main" {
   vpc_security_group_ids = var.security_group_ids
   parameter_group_name   = aws_db_parameter_group.main.name
 
-  publicly_accessible     = false
+  publicly_accessible     = true
   multi_az                = false # single-AZ for MVP cost
   backup_retention_period = 7
   backup_window           = "03:00-04:00"

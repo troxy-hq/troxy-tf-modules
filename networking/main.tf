@@ -76,34 +76,6 @@ resource "aws_internet_gateway" "main" {
 }
 
 # ─────────────────────────────────────────────
-# NAT Gateway (single AZ — cost-optimised for MVP)
-# ─────────────────────────────────────────────
-resource "aws_eip" "nat" {
-  domain = "vpc"
-
-  tags = {
-    Name    = "${local.name_prefix}-nat-eip"
-    Project = var.project
-    Env     = var.env
-  }
-
-  depends_on = [aws_internet_gateway.main]
-}
-
-resource "aws_nat_gateway" "main" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id
-
-  tags = {
-    Name    = "${local.name_prefix}-nat"
-    Project = var.project
-    Env     = var.env
-  }
-
-  depends_on = [aws_internet_gateway.main]
-}
-
-# ─────────────────────────────────────────────
 # Route Tables
 # ─────────────────────────────────────────────
 resource "aws_route_table" "public" {
@@ -121,13 +93,9 @@ resource "aws_route_table" "public" {
   }
 }
 
+# Private route table kept for future use — no default route (no NAT)
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.main.id
-  }
 
   tags = {
     Name    = "${local.name_prefix}-rt-private"
@@ -152,39 +120,25 @@ resource "aws_route_table_association" "private" {
 # Security Groups
 # ─────────────────────────────────────────────
 
-# Lambda — outbound to RDS, Redis, AWS services via NAT
-resource "aws_security_group" "lambda" {
-  name        = "${local.name_prefix}-lambda-sg"
-  description = "Security group for Lambda functions"
-  vpc_id      = aws_vpc.main.id
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow all outbound"
-  }
-
-  tags = {
-    Name    = "${local.name_prefix}-lambda-sg"
-    Project = var.project
-    Env     = var.env
-  }
-}
-
-# RDS — allow Postgres from Lambda
+# RDS — allow Postgres from anywhere (Lambda runs outside VPC; SSL + password enforced at DB level)
 resource "aws_security_group" "rds" {
   name        = "${local.name_prefix}-rds-sg"
   description = "Security group for RDS PostgreSQL"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.lambda.id]
-    description     = "Postgres from Lambda"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Postgres — public access, SSL required"
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

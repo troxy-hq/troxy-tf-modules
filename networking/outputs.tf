@@ -13,22 +13,7 @@ output "private_subnet_ids" {
   value       = aws_subnet.private[*].id
 }
 
-output "lambda_sg_id" {
-  description = "Lambda security group ID"
-  value       = aws_security_group.lambda.id
-}
-
 output "rds_sg_id" {
   description = "RDS security group ID"
   value       = aws_security_group.rds.id
-}
-
-output "redis_sg_id" {
-  description = "Redis security group ID"
-  value       = aws_security_group.redis.id
-}
-
-output "nat_gateway_ip" {
-  description = "NAT Gateway public IP (useful for allowlisting)"
-  value       = aws_eip.nat.public_ip
 }

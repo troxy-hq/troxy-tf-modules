@@ -56,9 +56,9 @@ resource "aws_iam_role" "lambda" {
 }
 
 # Managed policies
-resource "aws_iam_role_policy_attachment" "vpc_access" {
+resource "aws_iam_role_policy_attachment" "basic_execution" {
   role       = aws_iam_role.lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 # Custom policy for Troxy services
@@ -141,11 +141,6 @@ resource "aws_lambda_function" "core_handler" {
   memory_size = var.memory_size
   timeout     = var.timeout
 
-  vpc_config {
-    subnet_ids         = var.subnet_ids
-    security_group_ids = var.security_group_ids
-  }
-
   environment {
     variables = {
       ENV            = var.env
@@ -168,7 +163,7 @@ resource "aws_lambda_function" "core_handler" {
 
   depends_on = [
     aws_cloudwatch_log_group.lambda,
-    aws_iam_role_policy_attachment.vpc_access,
+    aws_iam_role_policy_attachment.basic_execution,
     aws_iam_role_policy.lambda_permissions,
   ]
 
