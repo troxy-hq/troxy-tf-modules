@@ -131,7 +131,7 @@ resource "aws_security_group" "rds" {
     to_port     = 5432
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Postgres — public access, SSL required"
+    description = "Postgres public access - SSL required"
   }
 
   egress {
@@ -143,27 +143,6 @@ resource "aws_security_group" "rds" {
 
   tags = {
     Name    = "${local.name_prefix}-rds-sg"
-    Project = var.project
-    Env     = var.env
-  }
-}
-
-# ElastiCache Redis — allow Redis from Lambda
-resource "aws_security_group" "redis" {
-  name        = "${local.name_prefix}-redis-sg"
-  description = "Security group for ElastiCache Redis"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    from_port       = 6379
-    to_port         = 6379
-    protocol        = "tcp"
-    security_groups = [aws_security_group.lambda.id]
-    description     = "Redis from Lambda"
-  }
-
-  tags = {
-    Name    = "${local.name_prefix}-redis-sg"
     Project = var.project
     Env     = var.env
   }
