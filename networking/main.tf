@@ -93,9 +93,14 @@ resource "aws_route_table" "public" {
   }
 }
 
-# Private route table kept for future use — no default route (no NAT)
+# Private route table — routes to IGW so RDS publicly_accessible=true return traffic can egress
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
 
   tags = {
     Name    = "${local.name_prefix}-rt-private"
