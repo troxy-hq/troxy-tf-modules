@@ -45,7 +45,7 @@ resource "aws_subnet" "public" {
 }
 
 # ─────────────────────────────────────────────
-# Private Subnets
+# Secondary Subnets (no auto-assigned public IPs; RDS lives here)
 # ─────────────────────────────────────────────
 resource "aws_subnet" "private" {
   count = 2
@@ -55,10 +55,10 @@ resource "aws_subnet" "private" {
   availability_zone = local.azs[count.index]
 
   tags = {
-    Name    = "${local.name_prefix}-private-${count.index + 1}"
+    Name    = "${local.name_prefix}-secondary-${count.index + 1}"
     Project = var.project
     Env     = var.env
-    Tier    = "private"
+    Tier    = "secondary"
   }
 }
 
@@ -103,7 +103,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name    = "${local.name_prefix}-rt-private"
+    Name    = "${local.name_prefix}-rt-secondary"
     Project = var.project
     Env     = var.env
   }
