@@ -48,14 +48,14 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
 
 resource "aws_cloudwatch_metric_alarm" "lambda_throttles" {
   alarm_name          = "${local.name_prefix}-lambda-throttles"
-  alarm_description   = "Lambda throttles detected — concurrency limit may be too low"
+  alarm_description   = "Lambda throttles sustained — concurrency limit may be too low"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = 1
+  evaluation_periods  = 3
   metric_name         = "Throttles"
   namespace           = "AWS/Lambda"
   period              = 300
   statistic           = "Sum"
-  threshold           = 1
+  threshold           = 10
   treat_missing_data  = "notBreaching"
 
   dimensions = {
