@@ -14,7 +14,7 @@ resource "aws_apigatewayv2_api" "main" {
     allow_credentials = false
     allow_headers     = ["authorization", "content-type", "x-troxy-key"]
     allow_methods     = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-    allow_origins     = ["https://dash.troxy.io", "https://troxy.io", "https://admin.troxy.io", "http://localhost:3000"]
+    allow_origins     = ["https://dash.troxy.io", "https://troxy.io", "https://admin.troxy.io"]
     max_age           = 3600
   }
 
